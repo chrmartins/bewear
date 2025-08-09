@@ -3,6 +3,7 @@
 import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -17,6 +18,7 @@ import {
 } from "../ui/sheet";
 
 export const Header = () => {
+  const router = useRouter();
   const { data: session } = authClient.useSession();
   return (
     <header className="flex items-center justify-between p-5">
@@ -60,7 +62,10 @@ export const Header = () => {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => authClient.signOut()}
+                      onClick={() => {
+                        authClient.signOut();
+                        router.push("/authentication");
+                      }}
                     >
                       <LogOutIcon />
                     </Button>
