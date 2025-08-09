@@ -51,23 +51,30 @@ const SignInForm = () => {
         onSuccess: () => {
           router.push("/");
         },
-        onError: (ctx: any) => {
-          if (ctx.error.code === "USER_NOT_FOUND") {
+        onError: ({ error }): void => {
+          const meta = error as unknown as Record<string, unknown>;
+          const code =
+            typeof meta["code"] === "string"
+              ? (meta["code"] as string)
+              : undefined;
+
+          if (code === "USER_NOT_FOUND") {
             toast.error("E-mail não encontrado.");
-            return form.setError("email", {
-              message: "E-mail não encontrado.",
-            });
+            form.setError("email", { message: "E-mail não encontrado." });
+            return;
           }
-          if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
+          if (code === "INVALID_EMAIL_OR_PASSWORD") {
             toast.error("E-mail ou senha inválidos.");
             form.setError("password", {
               message: "E-mail ou senha inválidos.",
             });
-            return form.setError("email", {
-              message: "E-mail ou senha inválidos.",
-            });
+            form.setError("email", { message: "E-mail ou senha inválidos." });
+            return;
           }
-          toast.error(ctx.error.message);
+          toast.error(
+            (error as { message?: string }).message ??
+              "Não foi possível autenticar. Tente novamente.",
+          );
         },
       },
     });
