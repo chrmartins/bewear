@@ -3,10 +3,10 @@ import Image from "next/image";
 
 import CategorySelector from "@/components/common/category-selector";
 import Footer from "@/components/common/footer";
-import { Header } from "@/components/common/header";
 import ProductList from "@/components/common/product-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
+import { Header } from "@/components/common/header";
 
 const Home = async () => {
   const products = await db.query.productTable.findMany({
