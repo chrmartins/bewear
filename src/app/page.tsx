@@ -8,9 +8,6 @@ import ProductList from "@/components/common/product-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
 
-// Evita SSG e queries ao DB durante o build (Vercel)
-export const dynamic = "force-dynamic";
-
 const Home = async () => {
   const products = await db.query.productTable.findMany({
     with: {
